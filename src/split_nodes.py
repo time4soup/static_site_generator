@@ -20,7 +20,7 @@ def split_nodes_delimiter_helper(new_nodes, old_node, delimiter, text_type):
         raise Exception(f"Invalid Markdown syntax: odd number of delimiter {delimiter}")
     split_value = old_node.text.split(delimiter)
     for i in range(delimiter_count + 1):
-        if i % 2 == 0:
+        if i % 2 == 0:  
             if split_value[i] != "":
                 new_nodes.append(TextNode(split_value[i], TextType.NORMAL))
         else:
