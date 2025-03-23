@@ -1,6 +1,9 @@
 from textnode import TextNode, TextType
 from extract_markdown import extract_markdown_links, extract_markdown_images
 
+#checks if input nodes need to be split, calls helper if splitting required
+#input: list of TextNodes, delimiter string, text type of inside markdown (text_type Enum)
+#output: list of new nodes (TextNodes)
 def split_nodes_delimiter(old_nodes, delimiter, text_type):
     if old_nodes is None or len(old_nodes) == 0:
         raise Exception("cannot split nodes without nodes")
@@ -10,11 +13,13 @@ def split_nodes_delimiter(old_nodes, delimiter, text_type):
             new_nodes.append(node)
         elif node.text.count(delimiter) == 0:
             new_nodes.append(node)
-        else:
+        else: #node needs to be split
             split_nodes_delimiter_helper(new_nodes, node, delimiter, text_type)
     return new_nodes
             
-
+#splits a node containing another node based on given delimiter
+#input: current list of split nodes, node to be split, delimiter str, text type Enum of inside node
+#output: no return, mutatates new_nodes list with split nodes from old_node
 def split_nodes_delimiter_helper(new_nodes, old_node, delimiter, text_type):
     delimiter_count = old_node.text.count(delimiter)
     if delimiter_count % 2 != 0:
@@ -27,10 +32,11 @@ def split_nodes_delimiter_helper(new_nodes, old_node, delimiter, text_type):
         else:
             new_nodes.append(TextNode(split_value[i], text_type))
 
+
 #parses input text nodes into sectioned text and image nodes
-#old_nodes: list of TextNode of raw markdown text
+#old_nodes: list of TextNodes
 #returns list of TextNode(s) of either text or image type 
-def split_nodes_image(old_nodes):
+def split_nodes_image(old_nodes): ### !!! ADD SUPPORT FOR INPUTTING RAW MARKDOWN AS old_nodes
     if old_nodes is None or len(old_nodes) == 0:
         raise Exception("cannot split nodes without nodes")
     new_nodes = []

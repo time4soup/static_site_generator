@@ -1,4 +1,5 @@
 import re
+# used by: split_nodes.py
 
 #extracts alt text and url for any images in inputted markdown text
 #text: string of raw markdown text

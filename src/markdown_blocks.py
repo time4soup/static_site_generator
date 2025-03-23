@@ -1,5 +1,8 @@
 import re
 
+# splits raw markdown into blocks of one type (based on empty line "" btwn blocks)
+# input: raw markdown (string)
+# output: list of markdown block (list of strings)
 def markdown_to_blocks(markdown):
     lines = markdown.split("\n")
     strip_lines = list(map(lambda x: x.strip(), lines))
@@ -16,6 +19,9 @@ def markdown_to_blocks(markdown):
         block_strings.append(line_to_add.rstrip("\n"))
     return block_strings
 
+# finds which type a given block of markdown fits into (based on markdown syntax)
+# input: block of markdown (string)
+# output: name of markdown type (string)
 def block_to_block_type(block):
     split_block = block.split("\n")
     if check_regex(r"\#{1,6} .*?", block):
@@ -32,6 +38,8 @@ def block_to_block_type(block):
     else:
         return "paragraph"
 
+#checks if input obj matches regex provided
+#input: test object (string or list of strings), output: bool
 def check_regex(regex, obj):
     if isinstance(obj, str):
         if re.fullmatch(regex, obj):

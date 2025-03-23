@@ -1,13 +1,16 @@
+#html node represents a tag in html (inline or block)
 class HTMLNode():
     def __init__(self, tag=None, value=None, children=None, props=None):
-        self.tag = tag
-        self.value = value
-        self.children = children
-        self.props = props
+        self.tag = tag # no tag == raw text
+        self.value = value # nodes must have either value or children 
+        self.children = children 
+        self.props = props 
     
     def to_html(self):
         raise NotImplementedError("Child class did not override to_html function")
     
+    # returns props key-value pairs in html format
+    # eg. "href": "http://website.com" -> href="http://website.com"
     def props_to_html(self):
         if self.props is None:
             return ""
@@ -28,11 +31,13 @@ class HTMLNode():
         and self.children == other.children \
         and self.props == other.props
 
-
+# html object with no nested nodes inside
+# has no children
 class LeafNode(HTMLNode):
     def __init__(self, tag, value, props=None):
-        super().__init__(tag, value, None, props)
+        super().__init__(tag, value, None, props) #leaf nodes have no children
     
+    # returns leaf node as html string with tags
     def to_html(self):
         if self.value is None:
             raise ValueError("leaf node without value")
@@ -44,10 +49,12 @@ class LeafNode(HTMLNode):
                 props_html = f" {key}=\"{value}\""
         return f"<{self.tag}{props_html}>{self.value}</{self.tag}>"
 
+# has no value but has children
 class ParentNode(HTMLNode):
     def __init__(self, tag, children, props=None):
         super().__init__(tag, None, children, props)
     
+    # outputs html string for parent node and all children recursively
     def to_html(self):
         if self.tag is None:
             raise ValueError("Parent has no tag")

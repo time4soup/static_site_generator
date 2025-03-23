@@ -1,6 +1,8 @@
 from enum import Enum
 from htmlnode import LeafNode
 
+# textnode represents one inline elements (either html or markdown)
+# does not support children / nested elements
 class TextNode():
     def __init__(self, text, text_type, url=None):
         self.text = text
