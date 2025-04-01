@@ -1,12 +1,10 @@
-from textnode import TextNode
-from markdown_blocks import block_to_block_type
+from copy_file_tree import copy_file_tree
+from generate_page import generate_pages_recursive
 
 def main():
-    node = TextNode("text", "normal", None)
-    node2 = TextNode("text", "normal")
-    block = """1.  
-2. 
-4. """
-    print(block_to_block_type(block))
+    static = r"./static"
+    public = r"./public"
+    copy_file_tree(static, public)
 
+    generate_pages_recursive(r"content", r"template.html", r"public")
 main()

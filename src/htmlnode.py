@@ -20,10 +20,15 @@ class HTMLNode():
         return str
     
     def __repr__(self):
-        print(f"tag: {self.tag}")
-        print(f"value: {self.value}")
-        print(f"children: {self.children}")
-        print(f"props: {self.props}")
+        return f"""
+LeafNode:
+tag: {self.tag}
+value: 
+{self.value}
+children:
+{self.children}
+props: {self.props}
+"""
     
     def __eq__(self, other):
         return self.tag == other.tag \
@@ -46,13 +51,31 @@ class LeafNode(HTMLNode):
         props_html = ""
         if self.props is not None:
             for key, value in self.props.items():
-                props_html = f" {key}=\"{value}\""
+                props_html = f"{props_html} {key}=\"{value}\""
         return f"<{self.tag}{props_html}>{self.value}</{self.tag}>"
+
+    def __repr__(self):
+        return f"""
+LeafNode:
+tag: {self.tag}
+value: 
+{self.value}
+props: {self.props}
+"""
 
 # has no value but has children
 class ParentNode(HTMLNode):
     def __init__(self, tag, children, props=None):
         super().__init__(tag, None, children, props)
+
+    def __repr__(self):
+        return f"""
+ParentNode:
+tag: {self.tag}
+children: 
+{self.children}
+props: {self.props}
+"""
     
     # outputs html string for parent node and all children recursively
     def to_html(self):

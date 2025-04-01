@@ -89,9 +89,10 @@ def split_nodes_link(old_nodes):
 #text: raw markdown text
 #returns list of TextNode(s) of any type
 def text_to_textnodes(text):
-    node = TextNode(text, TextType.NORMAL)
+    node = TextNode(text.strip("\n"), TextType.NORMAL)
     link_split = split_nodes_link([node])
     image_split = split_nodes_image(link_split)
     bold_split = split_nodes_delimiter(image_split, "**", TextType.BOLD)
     italic_split = split_nodes_delimiter(bold_split, "*", TextType.ITALIC)
-    return split_nodes_delimiter(italic_split, "`", TextType.CODE)
+    italic_split2 = split_nodes_delimiter(italic_split, "_", TextType.ITALIC)
+    return split_nodes_delimiter(italic_split2, "`", TextType.CODE)

@@ -4,7 +4,8 @@ import re
 # input: raw markdown (string)
 # output: list of markdown block (list of strings)
 def markdown_to_blocks(markdown):
-    lines = markdown.split("\n")
+    clean_markdown = markdown.strip("\n")
+    lines = clean_markdown.split("\n")
     strip_lines = list(map(lambda x: x.strip(), lines))
     block_strings = []
     line_to_add = ""
@@ -26,7 +27,7 @@ def block_to_block_type(block):
     split_block = block.split("\n")
     if check_regex(r"\#{1,6} .*?", block):
         return "heading"
-    if check_regex(r"```.*?```", block):
+    if check_regex(r"```.*?```", block) or (check_regex(r"```.*?", split_block[0]) and check_regex(r".*?```", split_block[-1])):
         return "code"
     if check_regex(r">.*?", split_block):
         return "quote"
