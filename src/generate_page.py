@@ -13,7 +13,7 @@ def extract_title(markdown):
     return match.group().lstrip("# ")
 
 # takes markdown from from_path and uses template at template_path to generate and store html file at dest_path
-def generate_page(from_path, template_path, dest_path):
+def generate_page(from_path, template_path, dest_path, root_dir):
     print(f"Generating page from {from_path} to {dest_path} using {template_path}")
 
     with open(from_path, "r") as from_file:
@@ -27,17 +27,17 @@ def generate_page(from_path, template_path, dest_path):
 
     template = template.replace("{{ Content }}", html)
     template = template.replace("{{ Title }}", title)
+    template = template.replace("href=\"/", f"href=\"{root_dir}")
+    template = template.replace("src=\"/", f"src=\"{root_dir}")
 
     write_item(dest_path, template)
 
 # finds all markdown files (.md) in given dir_path_content and creates html file in same directory
-def generate_pages_recursive(dir_path_content, template_path, dest_dir_path):
+def generate_pages_recursive(dir_path_content, template_path, dest_dir_path, root_dir):
     files = get_files(dir_path_content)
     for file in files:
         if not file.split(".")[1] == "md":
             continue
-        #print(f"file: {file}")
         base_file_name = file.removeprefix(dir_path_content).rstrip("md")
         file_dest = dest_dir_path + base_file_name + "html"
-        #print(f"from: {file}, template: {template_path}, dest: {file_dest}")
-        generate_page(file, template_path, file_dest)
+        generate_page(file, template_path, file_dest, root_dir)
